@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/backend/index.js",
     "start": "node src/backend/index.js",
+    "db:migrate": "node src/backend/scripts/migrate.js",
     "catalog:import": "node src/backend/scripts/import-catalog.js",
     "admin:setup": "node src/backend/scripts/setup-admin.js"
   },

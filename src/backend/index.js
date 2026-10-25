@@ -1,5 +1,6 @@
 const path = require('path');
 const dotenv = require('dotenv');
+const fs = require('fs/promises');
 
 dotenv.config();
 
@@ -14,12 +15,14 @@ const { router: adminRouter } = require('./routes/adminCatalog');
 const app = express();
 const isProduction = process.env.NODE_ENV === 'production';
 const PORT = Number.parseInt(process.env.PORT || '3000', 10);
-const HOST = process.env.HOST || '127.0.0.1';
+const HOST = process.env.HOST || (isProduction ? '0.0.0.0' : '127.0.0.1');
 const allowedOrigins = (process.env.CORS_ORIGINS || '')
   .split(',')
   .map(origin => origin.trim())
   .filter(Boolean);
 const frontendPath = path.join(__dirname, '..', 'frontend');
+const productImagePath = path.resolve(process.env.PRODUCT_IMAGES_DIR || path.join(frontendPath, 'images', 'products'));
+const bundledProductImagePath = path.join(frontendPath, 'images', 'products');
 let databaseReady = false;
 
 app.disable('x-powered-by');
@@ -55,6 +58,7 @@ app.use(express.json({ limit: '12mb' }));
 app.use(express.urlencoded({ extended: true, limit: '100kb', parameterLimit: 100 }));
 app.use('/api/admin', adminRouter);
 app.get('/admin', (req, res) => res.sendFile(path.join(frontendPath, 'admin', 'index.html')));
+app.use('/images/products', express.static(productImagePath, { dotfiles: 'deny', index: false }));
 app.use(express.static(frontendPath, { dotfiles: 'deny', index: 'index.html' }));
 app.use('/api/checkout', stripeRouter);
 
@@ -144,6 +148,17 @@ app.use((err, req, res, next) => {
 });
 
 async function start() {
+  if (process.env.PRODUCT_IMAGES_DIR) {
+    await fs.mkdir(productImagePath, { recursive: true });
+    // Seed bundled product photos into an empty persistent disk on first deploy.
+    for (const entry of await fs.readdir(bundledProductImagePath, { withFileTypes: true })) {
+      if (entry.isFile() && !entry.name.startsWith('.')) {
+        await fs.copyFile(path.join(bundledProductImagePath, entry.name), path.join(productImagePath, entry.name), require('fs').constants.COPYFILE_EXCL).catch(error => {
+          if (error.code !== 'EEXIST') throw error;
+        });
+      }
+    }
+  }
   databaseReady = await initializeDatabase();
   if (!databaseReady && isProduction) {
     throw new Error('Database is required in production.');

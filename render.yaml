@@ -1,0 +1,55 @@
+services:
+  - type: web
+    name: vintajoriginal-shop
+    runtime: node
+    region: frankfurt
+    plan: 0.5c-512mb
+    branch: main
+    buildCommand: npm ci
+    preDeployCommand: npm run db:migrate
+    startCommand: npm start
+    healthCheckPath: /health
+    disk:
+      name: product-images
+      mountPath: /var/data/product-images
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: DB_PRIVATE_NETWORK
+        value: "true"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: vintajoriginal-db
+          property: connectionString
+      - key: PRODUCT_IMAGES_DIR
+        value: /var/data/product-images
+      - key: SHIPPING_STANDARD_AZN_QAPIK
+        value: "499"
+      - key: SHIPPING_EXPRESS_AZN_QAPIK
+        value: ""
+      - key: CHECKOUT_TAX_RATE_BPS
+        value: "0"
+      - key: CHECKOUT_TAX_INCLUSIVE
+        value: "true"
+      - key: CHECKOUT_MODE
+        value: test
+      - key: CHECKOUT_LIVE_ENABLED
+        value: "false"
+      - key: STRIPE_CURRENCY
+        value: azn
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: ADMIN_PASSWORD_HASH
+        sync: false
+
+databases:
+  - name: vintajoriginal-db
+    region: frankfurt
+    plan: 0.1c-256mb
+    databaseName: vintajoriginal
+    user: vintajoriginal
+    diskSizeGB: 1
+    ipAllowList: []

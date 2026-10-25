@@ -3,10 +3,15 @@ const express = require('express');
 const { pool } = require('../config/database');
 
 const router = express.Router();
-const BASE_URL = (process.env.BASE_URL || '').replace(/\/$/, '');
+const BASE_URL = (process.env.BASE_URL || process.env.RENDER_EXTERNAL_URL || '').replace(/\/$/, '');
 const CURRENCY = (process.env.STRIPE_CURRENCY || 'azn').toLowerCase();
 const RESERVATION_MINUTES = 30;
 const checkoutWindows = new Map();
+
+function isStripeTestMode() {
+  return process.env.STRIPE_SECRET_KEY?.startsWith('sk_test_') &&
+    (process.env.NODE_ENV !== 'production' || process.env.CHECKOUT_MODE === 'test');
+}
 
 function checkoutRateLimit(req, res, next) {
   const key = req.ip || req.socket.remoteAddress || 'unknown';
@@ -32,7 +37,7 @@ function amountSetting(name) {
 }
 
 function getCheckoutConfig(method) {
-  const localStripeTest = process.env.NODE_ENV !== 'production' && process.env.STRIPE_SECRET_KEY?.startsWith('sk_test_');
+  const stripeTestMode = isStripeTestMode();
   let shipping = amountSetting(method === 'express'
     ? 'SHIPPING_EXPRESS_AZN_QAPIK'
     : 'SHIPPING_STANDARD_AZN_QAPIK');
@@ -40,7 +45,7 @@ function getCheckoutConfig(method) {
   let taxInclusive = process.env.CHECKOUT_TAX_INCLUSIVE;
   // The seller-approved initial delivery fee is 4.99 AZN for standard delivery
   // across Azerbaijan. Production still requires explicit tax settings.
-  if (localStripeTest) {
+  if (stripeTestMode) {
     if (shipping === null && method === 'standard') shipping = 499;
     if (taxRate === null) taxRate = 0;
     if (taxInclusive === undefined || taxInclusive === '') taxInclusive = 'true';
@@ -117,15 +122,15 @@ async function releaseExpiredReservations() {
 router.post('/session', checkoutRateLimit, async (req, res) => {
   const stripeSecret = process.env.STRIPE_SECRET_KEY;
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  const localStripeTest = process.env.NODE_ENV !== 'production' && stripeSecret?.startsWith('sk_test_');
-  if (!stripeSecret || (!webhookSecret && !localStripeTest) || !/^sk_(test|live)_/.test(stripeSecret)) {
+  const stripeTestMode = isStripeTestMode();
+  const stripeLiveMode = process.env.NODE_ENV === 'production' && stripeSecret?.startsWith('sk_live_') && process.env.CHECKOUT_LIVE_ENABLED === 'true';
+  if (!stripeSecret || (!stripeTestMode && !stripeLiveMode) || (!webhookSecret && !stripeTestMode)) {
     return res.status(503).json({ error: 'Ödəniş hələ aktiv deyil.' });
   }
-  if ((process.env.NODE_ENV === 'production' && !stripeSecret.startsWith('sk_live_')) ||
-      (process.env.NODE_ENV !== 'production' && stripeSecret.startsWith('sk_live_'))) {
+  if (process.env.CHECKOUT_MODE === 'test' && stripeSecret.startsWith('sk_live_')) {
     return res.status(503).json({ error: 'Stripe açarı bu mühit üçün uyğun deyil.' });
   }
-  if (process.env.NODE_ENV === 'production' && process.env.CHECKOUT_LIVE_ENABLED !== 'true') {
+  if (stripeSecret.startsWith('sk_live_') && process.env.CHECKOUT_LIVE_ENABLED !== 'true') {
     return res.status(503).json({ error: 'Canlı ödənişlər hələ açılmayıb.' });
   }
   if (!BASE_URL || !/^https:\/\//i.test(BASE_URL) && process.env.NODE_ENV === 'production') {
@@ -310,8 +315,7 @@ router.get('/status/:sessionId', async (req, res) => {
   if (!/^cs_(test|live)_[A-Za-z0-9]+$/.test(sessionId)) {
     return res.status(400).json({ error: 'Invalid checkout session.' });
   }
-  const localTestPolling = process.env.NODE_ENV !== 'production' &&
-    process.env.STRIPE_SECRET_KEY?.startsWith('sk_test_') && !process.env.STRIPE_WEBHOOK_SECRET;
+  const localTestPolling = isStripeTestMode() && !process.env.STRIPE_WEBHOOK_SECRET;
   if (localTestPolling) {
     try {
       const { rows } = await pool.query(`

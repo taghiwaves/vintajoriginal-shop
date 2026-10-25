@@ -7,7 +7,7 @@ const router = express.Router();
 const sessions = new Map();
 const attempts = new Map();
 const SESSION_MS = 8 * 60 * 60 * 1000;
-const imageRoot = path.resolve(__dirname, '../../frontend/images/products');
+const imageRoot = path.resolve(process.env.PRODUCT_IMAGES_DIR || path.resolve(__dirname, '../../frontend/images/products'));
 const publicFields = `p.sku, p.name_az, p.description_az, p.price_azn_qapik,
   p.brand, p.era, p.condition_az, p.stock_quantity, p.size_label, p.material,
   p.color, p.measurements, p.main_image_url, p.is_published, c.name_az AS category_name_az,

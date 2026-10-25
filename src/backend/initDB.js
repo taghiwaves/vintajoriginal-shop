@@ -17,11 +17,10 @@ async function initializeDatabase() {
 
     if (!rows[0].exists) {
       if (isProduction) {
-        throw new Error('Database schema is missing; apply migrations before starting.');
+        throw new Error('Database schema is missing; run npm run db:migrate before starting.');
       }
       const schemaPath = path.join(__dirname, 'migrations', '001-create-tables.sql');
-      const schema = fs.readFileSync(schemaPath, 'utf8');
-      await query(schema);
+      await query(fs.readFileSync(schemaPath, 'utf8'));
       console.log('Development database schema created.');
     }
 
