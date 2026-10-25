@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#faf8f4">
+  <meta name="description" content="Vintajoriginal — Bakıda seçilmiş, özünəməxsus vintage geyimlər.">
+  <title>Vintajoriginal — seçilmiş vintage geyimlər</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/catalog-data.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Əsas məzmuna keç</a>
+  <header class="site-header">
+    <div class="container header-content">
+      <a class="logo" href="index.html" aria-label="Vintajoriginal — ana səhifə">vintaj<span>original</span></a>
+      <button class="mobile-menu-btn" type="button" aria-label="Menyunu aç" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span></button>
+      <nav id="primary-nav" aria-label="Əsas menyu">
+        <ul class="nav-menu">
+          <li><a class="active" href="index.html" aria-current="page">Ana səhifə</a></li>
+          <li><a href="pages/products.html">Kolleksiya</a></li>
+          <li><a href="pages/products.html#new-arrivals">Yeni gələnlər</a></li>
+        </ul>
+      </nav>
+      <a class="header-cart" href="pages/cart.html" aria-label="Səbətə keç">Səbət <span class="cart-count" data-cart-count>0</span></a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero container">
+      <div class="hero-copy">
+        <p class="eyebrow">Bakıda seçilmiş vintage</p>
+        <h1>Keçmişdən gələn,<br><em>sənə məxsus</em> üslub.</h1>
+        <p class="hero-intro">Hər parça öz hekayəsini daşıyır. Gündəlik stilinə xarakter qatan seçilmiş geyimləri kəşf et.</p>
+        <a class="btn btn-primary" href="pages/products.html">Kolleksiyaya bax <span aria-hidden="true">↗</span></a>
+        <p class="hero-note">Az sayda seçilmiş parça · Bakından sevgi ilə</p>
+      </div>
+      <div class="hero-art" role="img" aria-label="Vintage geyim kolleksiyası üçün vizual sahə">
+        <div class="hero-art-label"><span>01 / 03</span><span>Yenidən kəşf et</span></div>
+        <div class="hero-art-shape" aria-hidden="true"><span>V</span></div>
+        <p class="hero-art-caption">Dəbdən düşməyən<br>parçalar.</p>
+      </div>
+    </section>
+
+    <section class="home-collection container" aria-labelledby="featured-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">Az sayda, özəl seçim</p><h2 id="featured-title">Seçilmiş parçalar</h2></div>
+        <a class="text-link" href="pages/products.html">Bütün kolleksiyaya bax <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="product-grid" id="featured-products" aria-live="polite"></div>
+      <p id="featured-status" class="catalog-empty" role="status" hidden></p>
+    </section>
+
+    <section class="brand-note"><div class="container brand-note-inner"><p class="eyebrow">Yavaş moda, uzun hekayələr</p><h2>Seç. Geyin. Öz hekayəni yaz.</h2><a class="text-link" href="pages/products.html">Sənin parçanı tap <span aria-hidden="true">→</span></a></div></section>
+  </main>
+  <footer class="site-footer"><div class="container footer-inner"><a class="logo" href="index.html">vintaj<span>original</span></a><p>Bakıda seçilmiş vintage geyimlər.</p><a href="mailto:info@vintajoriginal.az">info@vintajoriginal.az</a><small>© <span id="year"></span> Vintajoriginal</small></div></footer>
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+websayt/
+├── package.json
+├── .env.example
+├── .gitignore
+├── README.md
+├── src/
+│   ├── backend/
+│   │   ├── index.js
+│   │   ├── config/
+│   │   │   ├── database.js
+│   │   │   └── environments/
+│   │   │       ├── development.js
+│   │   │       ├── production.js
+│   │   │       └── test.js
+│   │   ├── middleware/
+│   │   │   ├── auth.js
+│   │   │   ├── validation.js
+│   │   │   └── errorHandler.js
+│   │   ├── routes/
+│   │   │   ├── api/
+│   │   │   │   ├── v1/
+│   │   │   │   │   ├── auth.js
+│   │   │   │   │   ├── products.js
+│   │   │   │   │   ├── cart.js
+│   │   │   │   │   ├── orders.js
+│   │   │   │   │   ├── users.js
+│   │   │   │   │   ├── admin.js
+│   │   │   │   │   ├── payments.js
+│   │   │   │   │   └── refunds.js
+│   │   │   │   └── index.js
+│   │   │   └── web.js   # For server-rendered pages if needed (though we prefer SPA)
+│   │   ├── services/
+│   │   │   ├── productService.js
+│   │   │   ├── cartService.js
+│   │   │   ├── orderService.js
+│   │   │   ├── userService.js
+│   │   │   ├── paymentService.js
+│   │   │   ├── refundService.js
+│   │   │   ├── emailService.js
+│   │   │   └── shippingService.js
+│   │   ├── models/
+│   │   │   ├── Product.js
+│   │   │   ├── ProductImage.js
+│   │   │   ├── Category.js
+│   │   │   ├── Cart.js
+│   │   │   ├── Order.js
+│   │   │   ├── OrderItem.js
+│   │   │   ├── RefundRequest.js
+│   │   │   ├── User.js
+│   │   │   └── PaymentRecord.js
+│   │   ├── utils/
+│   │   │   ├── database.js
+│   │   │   ├── helpers.js
+│   │   │   └── constants.js
+│   │   └── migrations/
+│   │       ├── 001-create-tables.sql
+│   │       └── ... (more migrations)
+│   └── frontend/
+│       ├── index.html
+│       ├── css/
+│       │   ├── styles.css
+│       │   ├── responsive.css
+│       │   └── design-system.css
+│       ├── js/
+│       │   ├── main.js
+│       │   ├── api.js
+│       │   ├── cart.js
+│       │   ├── product.js
+│       │   ├── order.js
+│       │   ├── user.js
+│       │   └── utils.js
+│       ├── assets/
+│       │   ├── images/
+│       │   │   ├── placeholders/
+│       │   │   └── product-photos/
+│       │   ├── fonts/
+│   │   │   └── icons/
+│       ├── i18n/
+│       │   ├── az.json
+│       │   └── en.json   # Optional, for future expansion
+│       └── pages/
+│           ├── home.html
+│           ├── products.html
+│           ├── product-detail.html
+│           ├── cart.html
+│           ├── checkout.html
+│           ├── login.html
+│           ├── register.html
+│           ├── account.html
+│           ├── order-history.html
+│           ├── order-detail.html
+│           ├── return-request.html
+│           ├── admin/
+│           │   ├── dashboard.html
+│           │   ├── products.html
+│           │   ├── orders.html
+│           │   └── refunds.html
+│           ├── shipping-info.html
+│           ├── return-policy.html
+│           ├── privacy.html
+│           └── terms.html
+└── docs/
+    ├── API.md
+    └── DESIGN.md

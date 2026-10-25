@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Shop-Verwaltung · Vintajoriginal</title>
+  <link rel="stylesheet" href="/admin/admin.css">
+  <script src="/admin/admin.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <section id="setupView" class="login-card" hidden>
+      <a class="brand" href="/">Vintaj<span>original</span></a>
+      <p class="eyebrow">ERSTEINRICHTUNG</p>
+      <h1>Admin-Passwort festlegen</h1>
+      <p class="muted">Lege ein persönliches Passwort fest, um deine Artikelverwaltung zu schützen.</p>
+      <form id="setupForm" class="stack">
+        <label for="setupPassword">Neues Passwort</label>
+        <input id="setupPassword" type="password" autocomplete="new-password" minlength="12" maxlength="200" required>
+        <label for="setupConfirmation">Passwort wiederholen</label>
+        <input id="setupConfirmation" type="password" autocomplete="new-password" minlength="12" maxlength="200" required>
+        <small class="muted">Mindestens 12 Zeichen. Die Eingabe wird beim Tippen verborgen.</small>
+        <button class="button primary" type="submit">Passwort sicher speichern</button>
+      </form>
+      <p id="setupMessage" class="message" role="status"></p>
+    </section>
+
+    <section id="loginView" class="login-card" hidden>
+      <a class="brand" href="/">Vintaj<span>original</span></a>
+      <p class="eyebrow">SHOP VERWALTUNG</p>
+      <h1>Anmelden</h1>
+      <p class="muted">Verwalte Artikel und Produktfotos.</p>
+      <form id="loginForm" class="stack">
+        <label for="password">Admin-Passwort</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button class="button primary" type="submit">Anmelden</button>
+      </form>
+      <p id="loginMessage" class="message" role="status"></p>
+      <p id="setupHint" class="setup-hint" hidden>Die Ersteinrichtung ist nur lokal auf diesem Computer verfügbar.</p>
+    </section>
+
+    <section id="appView" hidden>
+      <header class="topbar">
+        <div><a class="brand" href="/">Vintaj<span>original</span></a><span class="admin-tag">VERWALTUNG</span></div>
+        <div class="topbar-actions"><button id="paymentSetupButton" class="button quiet" type="button">Stripe-Testzahlung</button><button id="logoutButton" class="button quiet" type="button">Abmelden</button></div>
+      </header>
+      <div class="heading-row">
+        <div><p class="eyebrow">KATALOG</p><h1>Artikel</h1><p class="muted">Produkte, Fotos und Sichtbarkeit im Shop verwalten.</p></div>
+        <button id="newButton" class="button primary" type="button">＋ Neuer Artikel</button>
+      </div>
+      <p id="appMessage" class="message" role="status"></p>
+      <div class="workspace">
+        <aside class="product-list-panel"><div class="panel-heading"><h2>Alle Artikel</h2><span id="productCount" class="count">0</span></div><div id="productList" class="product-list"></div></aside>
+        <section id="editor" class="editor" aria-live="polite">
+          <div class="empty-editor"><span class="empty-mark">V</span><h2>Artikel auswählen</h2><p>Oder lege einen neuen Artikel an.</p></div>
+        </section>
+      </div>
+      <dialog id="stripeDialog" class="settings-dialog">
+        <form method="dialog" class="dialog-close"><button class="button quiet" aria-label="Schließen">Schließen</button></form>
+        <p class="eyebrow">NUR LOKALE ENTWICKLUNG</p>
+        <h2>Stripe-Testzahlung verbinden</h2>
+        <p class="muted">Füge den geheimen API-Schlüssel aus dem Stripe-Dashboard im <strong>Testmodus</strong> ein. Er muss mit <code>sk_test_</code> beginnen. Die Verbindung wird bei Stripe geprüft und der Schlüssel lokal in der ignorierten <code>.env</code>-Datei gespeichert; er wird nicht im Shop angezeigt.</p>
+        <form id="stripeTestForm" class="stack">
+          <label for="stripeTestKey">Stripe-Testschlüssel</label>
+          <input id="stripeTestKey" type="password" autocomplete="new-password" spellcheck="false" required>
+          <button id="stripeTestSave" class="button primary" type="submit">Testschlüssel prüfen und speichern</button>
+        </form>
+        <p id="stripeTestStatus" class="message" role="status"></p>
+        <p class="setup-hint">Testkäufe laufen mit Stripe-Testdaten und lösen keine echte Abbuchung aus. Livezahlungen bleiben gesperrt. Im lokalen Testmodus gilt Standardversand von 4,99 AZN und 0 % Steuer; Steuerwerte sind noch nicht festgelegt.</p>
+      </dialog>
+    </section>
+  </main>
+</body>
+</html>

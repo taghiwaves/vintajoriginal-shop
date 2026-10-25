@@ -1,0 +1,23 @@
+{
+  "nav": {
+    "home": "Ana səhifə",
+    "products": "Məhsullar",
+    "account": "Hesabım"
+  },
+  "hero": {
+    "title": "vintajoriginal - Günlük Giyimdə Unikal Stil",
+    "subtitle": "Baku'daki seçilmiş vintage vrouwen giysi kolleksiyası",
+    "buttonPrimary": "Kolleksiyona bax",
+    "buttonSecondary": "Haqqımızda bax"
+  },
+  "footer": {
+    "copyright": "Bütün hüquqlar qorunur."
+  },
+  "common": {
+    "loading": "Yüklənir...",
+    "error": "Bir şeyler səhv geddi.",
+    "success": "Uğurla tamamlandı!",
+    "goBack": "Geri gr",
+    "continueShopping": "Alış-verişə davam et"
+  }
+}
